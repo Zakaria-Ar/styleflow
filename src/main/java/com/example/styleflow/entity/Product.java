@@ -4,15 +4,20 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 
 @Entity // maps this class to a DB table (one row per instance) — NOT a bean
 public class Product {
     @Id // marks the primary key field
     @GeneratedValue(strategy = GenerationType.IDENTITY) // DB generates the key value on insert (IDENTITY = auto-increment)
     private Integer id;
+    @NotBlank
     private String name;
     private String description;
+    @Positive
     private Double price;
+    @Positive
     private Integer stockQuantity;
     private String category;
 

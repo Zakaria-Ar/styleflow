@@ -2,10 +2,10 @@ package com.example.styleflow.controller;
 
 import com.example.styleflow.entity.Product;
 import com.example.styleflow.service.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,5 +24,11 @@ public class ProductController {
         return productService.getProducts();
     }
 
+
+    @PostMapping("/products")
+    public ResponseEntity<Product> addProduct(@Valid @RequestBody Product product) {
+        Product product1 = productService.addProduct(product);
+        return ResponseEntity.status(HttpStatus.CREATED).body(product1);
+    }
 
 }
