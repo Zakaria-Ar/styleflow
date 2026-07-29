@@ -27,4 +27,9 @@ public class ProductService {
         return productRepository.findById(id)
                 .orElseThrow(() -> new ProductNotFoundException(id));
     }
+
+    public void deleteProduct(int id) {
+        Product product = getProduct(id);   // already throws 404 if missing
+        productRepository.delete(product);
+    }
 }
