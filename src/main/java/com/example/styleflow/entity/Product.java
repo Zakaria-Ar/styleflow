@@ -7,21 +7,27 @@ import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 
-@Entity // maps this class to a DB table (one row per instance) — NOT a bean
+@Entity // maps this class to a DB table (one row per instance) — NOT a Spring bean
 public class Product {
-    @Id // marks the primary key field
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // DB generates the key value on insert (IDENTITY = auto-increment)
+
+    @Id // primary key
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // DB auto-increments on insert; never set manually
     private Integer id;
-    @NotBlank
+
+    @NotBlank // rejected at 400 by @Valid if blank or null — before it reaches the DB
     private String name;
+
     private String description;
-    @Positive
+
+    @Positive // must be > 0
     private Double price;
+
     @Positive
     private Integer stockQuantity;
+
     private String category;
 
-    public Product() {}
+    public Product() {} // no-arg constructor required by JPA/Hibernate to build entities
 
     public Product(Integer id, String name, String description, Double price, Integer stockQuantity, String category) {
         this.id = id;
@@ -32,41 +38,17 @@ public class Product {
         this.category = category;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-    public String getName() {
-        return name;
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
-    public String getDescription() {
-        return description;
-    }
-    public void setDescription(String description) {
-        this.description = description;
-    }
-    public Double getPrice() {
-        return price;
-    }
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-    public Integer getStockQuantity() {
-        return stockQuantity;
-    }
-    public void setStockQuantity(Integer stockQuantity) {
-        this.stockQuantity = stockQuantity;
-    }
-    public String getCategory() {
-        return category;
-    }
-    public void setCategory(String category) {
-        this.category = category;
-    }
+    // getters/setters — required so Jackson can serialize to JSON and Hibernate can populate fields
+    public Integer getId() { return id; }
+    public void setId(Integer id) { this.id = id; }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+    public Double getPrice() { return price; }
+    public void setPrice(Double price) { this.price = price; }
+    public Integer getStockQuantity() { return stockQuantity; }
+    public void setStockQuantity(Integer stockQuantity) { this.stockQuantity = stockQuantity; }
+    public String getCategory() { return category; }
+    public void setCategory(String category) { this.category = category; }
 }

@@ -9,37 +9,36 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController // @Controller + @ResponseBody → returns become JSON
-@RequestMapping("/api") // base path for every endpoint in this controller
+@RestController // @Controller + @ResponseBody → return values become JSON
+@RequestMapping("/api") // base path prefix for every endpoint below
 public class ProductController {
 
     private final ProductService productService;
 
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService) { // constructor injection
         this.productService = productService;
     }
 
-    @GetMapping("/products") // maps HTTP GET (retrieve) to this method
-    public List<Product> getProducts()  {
+    @GetMapping("/products") // GET /api/products → list all (200)
+    public List<Product> getProducts() {
         return productService.getProducts();
     }
 
-
-    @PostMapping("/products")
+    @PostMapping("/products") // POST /api/products → create (201, or 400 if @Valid fails)
     public ResponseEntity<Product> addProduct(@Valid @RequestBody Product product) {
-        Product product1 = productService.addProduct(product);
-        return ResponseEntity.status(HttpStatus.CREATED).body(product1);
+        // @Valid runs the field constraints BEFORE this body; invalid input never reaches here
+        Product savedProduct = productService.addProduct(product);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedProduct); // 201 + saved product (with id)
     }
 
-    @GetMapping("/products/{id}")
-    public ResponseEntity<Product> getProduct(@PathVariable int id) {
+    @GetMapping("/products/{id}") // GET one (200, or 404 if missing)
+    public ResponseEntity<Product> getProduct(@PathVariable Integer id) {
         return ResponseEntity.ok(productService.getProduct(id));
     }
 
-    @DeleteMapping("/products/{id}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable int id) {
+    @DeleteMapping("/products/{id}") // DELETE (204, or 404 if missing)
+    public ResponseEntity<Void> deleteProduct(@PathVariable Integer id) {
         productService.deleteProduct(id);
-        return ResponseEntity.noContent().build();   // 204, empty body
+        return ResponseEntity.noContent().build(); // 204 No Content — success, empty body
     }
-
 }
