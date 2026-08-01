@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController // @Controller + @ResponseBody → return values become JSON
 @RequestMapping("/api") // base path prefix for every endpoint below
+@CrossOrigin(origins = "http://localhost:4200")   // allow the Angular dev server
 public class ProductController {
 
     private final ProductService productService;
