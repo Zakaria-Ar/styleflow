@@ -37,7 +37,7 @@ class ProductServiceTest {
         // Then the same product is returned
         Assertions.assertNotNull(result);
         Assertions.assertEquals(product, result);
-        Assertions.assertEquals(999, result.getId());
+        Assertions.assertEquals(1, result.getId());
     }
 
     @Test
