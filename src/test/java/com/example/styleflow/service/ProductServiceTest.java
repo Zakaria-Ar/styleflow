@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
 import java.util.Optional;
 
 // Unit tests for ProductService, isolated from the database via a mocked repository.
@@ -73,5 +74,63 @@ class ProductServiceTest {
 
         // Then it delegates to the repository exactly once (guards against redundant DB calls)
         Mockito.verify(productRepository, Mockito.times(1)).findById(1);
+    }
+
+    @Test
+    void shouldReturnAllProducts() {
+        // Given the repo returns a list of two products
+        List<Product> products = List.of(
+                new Product(1, "Shirt", "desc", 200.0, 5, "Tops"),
+                new Product(2, "Jeans", "desc", 350.0, 3, "Bottoms")
+        );
+        Mockito.when(productRepository.findAll()).thenReturn(products);
+
+        // When getProducts is called
+        List<Product> result = productService.getProducts();
+
+        // Then it returns the repo's list
+        Assertions.assertEquals(2, result.size());
+        Assertions.assertEquals(products, result);
+    }
+
+    @Test
+    void shouldAddProduct() {
+        // Given a product the repo will save and return
+        Product product = new Product(null, "Shirt", "desc", 200.0, 5, "Tops");
+        Product saved = new Product(1, "Shirt", "desc", 200.0, 5, "Tops");
+        Mockito.when(productRepository.save(product)).thenReturn(saved);
+
+        // When addProduct is called
+        Product result = productService.addProduct(product);
+
+        // Then it returns the saved product with its id
+        Assertions.assertEquals(1, result.getId());
+        Assertions.assertEquals("Shirt", result.getName());
+    }
+
+    @Test
+    void shouldDeleteProduct() {
+        // Given an existing product
+        Product product = new Product(1, "Shirt", "desc", 200.0, 5, "Tops");
+        Mockito.when(productRepository.findById(1)).thenReturn(Optional.of(product));
+
+        // When deleteProduct is called
+        productService.deleteProduct(1);
+
+        // Then the repo's delete is called with that product
+        Mockito.verify(productRepository).delete(product);
+    }
+
+    @Test
+    void shouldThrowWhenDeletingMissingProduct() {
+        // Given the product does not exist
+        Mockito.when(productRepository.findById(999)).thenReturn(Optional.empty());
+
+        // When/Then deleting it throws ProductNotFoundException
+        Assertions.assertThrows(ProductNotFoundException.class,
+                () -> productService.deleteProduct(999));
+
+        // And delete is never called (nothing to delete)
+        Mockito.verify(productRepository, Mockito.never()).delete(Mockito.any());
     }
 }
