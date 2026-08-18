@@ -33,7 +33,7 @@ class ProductRepositoryTest {
 
     @Test
     void shouldSaveAndFindProduct() {
-        Product product = new Product(null, "Shirt", "desc", 200.0, 5, "Tops");
+        Product product = new Product(null, "Shirt", "desc", 200.0, 5, null);
         Product saved = productRepository.save(product);
 
         Optional<Product> found = productRepository.findById(saved.getId());

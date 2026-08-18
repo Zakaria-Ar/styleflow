@@ -1,9 +1,6 @@
 package com.example.styleflow.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 
@@ -25,11 +22,13 @@ public class Product {
     @Positive
     private Integer stockQuantity;
 
-    private String category;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    private Category category;
 
     public Product() {} // no-arg constructor required by JPA/Hibernate to build entities
 
-    public Product(Integer id, String name, String description, Double price, Integer stockQuantity, String category) {
+    public Product(Integer id, String name, String description, Double price, Integer stockQuantity, Category category) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -49,6 +48,6 @@ public class Product {
     public void setPrice(Double price) { this.price = price; }
     public Integer getStockQuantity() { return stockQuantity; }
     public void setStockQuantity(Integer stockQuantity) { this.stockQuantity = stockQuantity; }
-    public String getCategory() { return category; }
-    public void setCategory(String category) { this.category = category; }
+    public Category getCategory() { return category; }
+    public void setCategory(Category category) { this.category = category; }
 }
