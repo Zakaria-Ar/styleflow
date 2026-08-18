@@ -29,7 +29,7 @@ public class ProductControllerTest {
     void shouldReturn201ForCreatingProduct() throws Exception {
         mockMvc.perform(post("/api/products")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"name\":\"Shirt\",\"price\":200,\"stockQuantity\":5,\"category\":\"Tops\"}"))
+                        .content("{\"name\":\"Shirt\",\"price\":200,\"stockQuantity\":5}"))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.name").value("Shirt"))    // assert the JSON body
                 .andExpect(jsonPath("$.id").exists());           // id was generated
