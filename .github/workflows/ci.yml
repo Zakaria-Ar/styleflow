@@ -16,4 +16,4 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
       - name: Build and test
-        run: sh ./mvnw test -Dtest=NPlusOneTest     # compile + run all tests
+        run: sh ./mvnw test -Dtest=ProductControllerTest     # compile + run all tests
