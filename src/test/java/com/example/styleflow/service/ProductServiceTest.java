@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,7 +30,7 @@ class ProductServiceTest {
     @Test
     void shouldGetProductByIdSuccessfully() {
         // Given a product that the repository will return for id 1
-        Product product = new Product(1, "si", "driss", 10.0, 1, null);
+        Product product = new Product(1, "si", "driss", BigDecimal.valueOf(10.0), 1, null);
         Mockito.when(productRepository.findById(1)).thenReturn(Optional.of(product));
 
         // When the product is requested
@@ -66,7 +67,7 @@ class ProductServiceTest {
     @Test
     void shouldCallRepositoryFindByIdExactlyOnce() {
         // Given an existing product
-        Product product = new Product(1, "si", "driss", 10.0, 1, null);
+        Product product = new Product(1, "si", "driss", BigDecimal.valueOf(10.0), 1, null);
         Mockito.when(productRepository.findById(1)).thenReturn(Optional.of(product));
 
         // When the service runs
@@ -80,8 +81,8 @@ class ProductServiceTest {
     void shouldReturnAllProducts() {
         // Given the repo returns a list of two products
         List<Product> products = List.of(
-                new Product(1, "Shirt", "desc", 200.0, 5, null),
-                new Product(2, "Jeans", "desc", 350.0, 3, null)
+                new Product(1, "Shirt", "desc", BigDecimal.valueOf(200.0), 5, null),
+                new Product(2, "Jeans", "desc", BigDecimal.valueOf(350.0), 3, null)
         );
         Mockito.when(productRepository.findAll()).thenReturn(products);
 
@@ -96,8 +97,8 @@ class ProductServiceTest {
     @Test
     void shouldAddProduct() {
         // Given a product the repo will save and return
-        Product product = new Product(null, "Shirt", "desc", 200.0, 5, null);
-        Product saved = new Product(1, "Shirt", "desc", 200.0, 5, null);
+        Product product = new Product(null, "Shirt", "desc", BigDecimal.valueOf(200.0), 5, null);
+        Product saved = new Product(1, "Shirt", "desc", BigDecimal.valueOf(200.0), 5, null);
         Mockito.when(productRepository.save(product)).thenReturn(saved);
 
         // When addProduct is called
@@ -111,7 +112,7 @@ class ProductServiceTest {
     @Test
     void shouldDeleteProduct() {
         // Given an existing product
-        Product product = new Product(1, "Shirt", "desc", 200.0, 5, null);
+        Product product = new Product(1, "Shirt", "desc", BigDecimal.valueOf(200.0), 5, null);
         Mockito.when(productRepository.findById(1)).thenReturn(Optional.of(product));
 
         // When deleteProduct is called

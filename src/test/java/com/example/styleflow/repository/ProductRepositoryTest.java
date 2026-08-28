@@ -10,6 +10,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -33,7 +34,7 @@ class ProductRepositoryTest {
 
     @Test
     void shouldSaveAndFindProduct() {
-        Product product = new Product(null, "Shirt", "desc", 200.0, 5, null);
+        Product product = new Product(null, "Shirt", "desc", BigDecimal.valueOf(200.0), 5, null);
         Product saved = productRepository.save(product);
 
         Optional<Product> found = productRepository.findById(saved.getId());

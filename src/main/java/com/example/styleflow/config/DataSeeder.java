@@ -19,6 +19,9 @@ public class DataSeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
+        if (categoryRepository.count() > 0) {
+            return;   // already seeded, skip
+        }
         // create 5 categories, each with 3 products
         String[] categoryNames = {"Tops", "Bottoms", "Footwear", "Outerwear", "Accessories"};
 
