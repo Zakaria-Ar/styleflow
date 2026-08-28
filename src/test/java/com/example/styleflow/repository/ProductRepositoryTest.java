@@ -1,5 +1,6 @@
 package com.example.styleflow.repository;
 
+import com.example.styleflow.IntegrationTestBase;
 import com.example.styleflow.entity.Product;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @SpringBootTest
 @Testcontainers
-class ProductRepositoryTest {
+class ProductRepositoryTest extends IntegrationTestBase {
 
     @Container
     static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16");
