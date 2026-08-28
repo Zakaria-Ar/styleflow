@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@SpringBootTest
 @Transactional   // keeps the session open so lazy loading works inside the test
 class NPlusOneTest extends IntegrationTestBase {
 
