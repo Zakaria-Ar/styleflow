@@ -6,6 +6,8 @@ import com.example.styleflow.repository.CategoryRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+
 @Component
 public class DataSeeder implements CommandLineRunner {
 
@@ -27,7 +29,7 @@ public class DataSeeder implements CommandLineRunner {
                 Product product = new Product();
                 product.setName(catName + " item " + i);
                 product.setDescription("A " + catName + " product");
-                product.setPrice(100.0 * i);
+                product.setPrice(BigDecimal.valueOf(100.0 * i));
                 product.setStockQuantity(10 * i);
                 product.setCategory(category);           // link product → category
                 category.getProducts().add(product);     // link category → product
