@@ -1,5 +1,6 @@
 package com.example.styleflow.repository;
 
+import com.example.styleflow.IntegrationTestBase;
 import com.example.styleflow.entity.Category;
 import com.example.styleflow.repository.CategoryRepository;
 import org.junit.jupiter.api.Test;
@@ -11,7 +12,7 @@ import java.util.List;
 
 @SpringBootTest
 @Transactional   // keeps the session open so lazy loading works inside the test
-class NPlusOneTest {
+class NPlusOneTest extends IntegrationTestBase {
 
     @Autowired
     private CategoryRepository categoryRepository;

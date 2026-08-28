@@ -1,5 +1,6 @@
 package com.example.styleflow.controller;
 
+import com.example.styleflow.IntegrationTestBase;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,7 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class ProductControllerTest {
+public class ProductControllerTest extends IntegrationTestBase {
 
     @Autowired
     private MockMvc mockMvc; //the tool to send fake HTTP requests
