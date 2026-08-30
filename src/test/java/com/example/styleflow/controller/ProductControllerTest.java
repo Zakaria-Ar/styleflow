@@ -1,12 +1,16 @@
 package com.example.styleflow.controller;
 
-import com.example.styleflow.IntegrationTestBase;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -15,15 +19,26 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class ProductControllerTest extends IntegrationTestBase {
+@Testcontainers
+public class ProductControllerTest {
+
+    @Container
+    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16");
+
+    @DynamicPropertySource
+    static void props(DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.url", postgres::getJdbcUrl);
+        registry.add("spring.datasource.username", postgres::getUsername);
+        registry.add("spring.datasource.password", postgres::getPassword);
+    }
 
     @Autowired
-    private MockMvc mockMvc; //the tool to send fake HTTP requests
+    private MockMvc mockMvc;
 
     @Test
     void shouldReturn404ForMissingProduct() throws Exception {
-        mockMvc.perform(get("/api/products/999"))     // send GET
-                .andExpect(status().isNotFound());     // assert 404
+        mockMvc.perform(get("/api/products/999"))
+                .andExpect(status().isNotFound());
     }
 
     @Test
@@ -32,8 +47,8 @@ public class ProductControllerTest extends IntegrationTestBase {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"name\":\"Shirt\",\"price\":200,\"stockQuantity\":5}"))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.name").value("Shirt"))    // assert the JSON body
-                .andExpect(jsonPath("$.id").exists());           // id was generated
+                .andExpect(jsonPath("$.name").value("Shirt"))
+                .andExpect(jsonPath("$.id").exists());
     }
 
     @Test
